@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+---
+
+<BaseLayout
+  title="Case studies — Nara"
+  description="Consulting work on systemic problems — case studies are in preparation."
+>
+  <section class="wrap page-head">
+    <span class="eyebrow">Case studies</span>
+    <h1>Working through hard, tangled problems</h1>
+    <p class="intro">
+      Consulting engagements across social innovation and systemic design —
+      written up in more detail here as each one clears for public sharing.
+    </p>
+  </section>
+
+  <section class="wrap case-grid">
+    <CaseStudyCard
+      domain="Systemic design"
+      client="Case study coming soon"
+      summary="Full write-ups of consulting engagements are being prepared. In the meantime, if you're evaluating fit for a project, the fastest path is a direct conversation."
+    />
+    <CaseStudyCard
+      domain="Social innovation"
+      client="Case study coming soon"
+      summary="Same story here — details are being finalized with the relevant clients before publishing. Reach out and I'm happy to talk through relevant work directly."
+    />
+  </section>
+
+  <section class="wrap case-cta">
+    <hr class="thread" />
+    <p class="case-cta__text">Want to talk through a specific problem first?</p>
+    <a class="button" href="mailto:hello@example.com">get in touch →</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-4);
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+  }
+
+  .case-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    padding-bottom: var(--space-5);
+  }
+
+  .case-cta {
+    padding-bottom: var(--space-6);
+  }
+
+  .case-cta__text {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  @media (max-width: 780px) {
+    .case-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

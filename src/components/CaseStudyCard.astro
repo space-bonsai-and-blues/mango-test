@@ -1,0 +1,26 @@
+---
+interface Props {
+  client: string;
+  summary: string;
+  domain: string;
+}
+
+const { client, summary, domain } = Astro.props;
+---
+
+<div class="case-card card">
+  <span class="eyebrow">{domain}</span>
+  <h3>{client}</h3>
+  <p class="case-card__summary">{summary}</p>
+</div>
+
+<style>
+  .case-card {
+    height: 100%;
+  }
+  .case-card__summary {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+  }
+</style>

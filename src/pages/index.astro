@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AppCard from '../components/AppCard.astro';
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+import IndraNet from '../components/IndraNet.astro';
+import { getCollection } from 'astro:content';
+
+const writingEntries = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Nara">
+  <section class="wrap home-grid">
+    <div class="quadrant quadrant--apps">
+      <span class="eyebrow">Apps</span>
+      <h2>Things people can use today</h2>
+      <div class="quadrant__cards">
+        <AppCard
+          name="AI Scout"
+          description="A tool for exploring ideas with AI as a thinking partner, not an answer machine."
+          status="live"
+          statusLabel="live"
+          href="https://lovable.dev"
+        />
+        <AppCard
+          name="Dhamma app"
+          description="A companion for contemplative practice, currently in development pending teacher review."
+          status="paused"
+          statusLabel="in development"
+        />
+      </div>
+      <a class="quadrant__more" href="/apps">all apps →</a>
+    </div>
+
+    <div class="quadrant quadrant--case-studies">
+      <span class="eyebrow">Case studies</span>
+      <h2>Working with organizations on hard problems</h2>
+      <div class="quadrant__cards">
+        <CaseStudyCard
+          client="Case study coming soon"
+          domain="Systemic design"
+          summary="Detailed write-ups of consulting engagements are being prepared — check back, or ask in person."
+        />
+      </div>
+      <a class="quadrant__more" href="/case-studies">all case studies →</a>
+    </div>
+
+    <div class="quadrant quadrant--writing">
+      <span class="eyebrow">Writing</span>
+      <h2>Space Bonsai and Blues</h2>
+      <ul class="writing-list">
+        {writingEntries.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.id}`}>
+              <span class="writing-list__series">{entry.data.series}</span>
+              <span class="writing-list__title">{entry.data.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a class="quadrant__more" href="/writing">all writing →</a>
+    </div>
+
+    <div class="quadrant quadrant--net">
+      <IndraNet />
+    </div>
+
+    <div class="quadrant quadrant--about">
+      <p class="about-line">
+        Consulting, apps, and writing — different ways of finding and building
+        order amid complexity.
+      </p>
+      <a class="quadrant__more" href="mailto:hello@example.com">get in touch →</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'apps case-studies'
+      'writing writing'
+      'net about';
+    gap: var(--space-4) var(--space-5);
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-6);
+  }
+
+  .quadrant--apps { grid-area: apps; }
+  .quadrant--case-studies { grid-area: case-studies; }
+  .quadrant--writing { grid-area: writing; border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
+  .quadrant--net { grid-area: net; }
+  .quadrant--about {
+    grid-area: about;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+
+  .quadrant__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .quadrant--case-studies .quadrant__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .quadrant__more {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    text-decoration: none;
+    color: var(--color-accent);
+  }
+
+  .writing-list {
+    list-style: none;
+    margin: 0 0 var(--space-2);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .writing-list a {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    text-decoration: none;
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--color-border);
+    transition: border-color 0.2s var(--ease);
+  }
+
+  .writing-list a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .writing-list__series {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .writing-list__title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    text-align: right;
+  }
+
+  .about-line {
+    color: var(--color-text-muted);
+    max-width: 32ch;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 780px) {
+    .home-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'apps'
+        'case-studies'
+        'writing'
+        'net'
+        'about';
+    }
+    .quadrant__cards {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

@@ -1,0 +1,222 @@
+---
+// Indra's net: a lattice of jewel-nodes joined by threads.
+// Tap any node — light spreads outward along a random path.
+// No two taps light the same pattern, and there's no "correct"
+// node to tap: it's a small, literal illustration of Cynefin's
+// Complex domain, where cause and effect can only be understood
+// looking backward, not traced out in advance.
+---
+
+<div class="indra-net">
+  <svg
+    id="indra-net-svg"
+    viewBox="0 0 440 280"
+    role="img"
+    aria-label="An interactive net of connected points. Selecting any point lights a different, unpredictable pattern along its threads."
+  >
+  </svg>
+  <p class="eyebrow indra-net__caption">tap a point — a different pattern lights each time</p>
+</div>
+
+<style>
+  .indra-net {
+    max-width: 440px;
+  }
+
+  .indra-net__caption {
+    margin-top: var(--space-2);
+    margin-bottom: 0;
+  }
+
+  #indra-net-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  #indra-net-svg :global(.net-edge) {
+    stroke: var(--color-border);
+    stroke-width: 1;
+    fill: none;
+    transition: stroke 1.1s ease-out, stroke-width 1.1s ease-out, opacity 1.1s ease-out;
+  }
+
+  #indra-net-svg :global(.net-edge.is-lit) {
+    stroke-width: 1.6;
+    transition: stroke 0.15s ease-in, stroke-width 0.15s ease-in;
+  }
+
+  #indra-net-svg :global(.net-node) {
+    fill: var(--color-surface-raised);
+    stroke: var(--color-text-dim);
+    stroke-width: 1;
+    cursor: pointer;
+    transition: fill 1.1s ease-out, stroke 1.1s ease-out, r 1.1s ease-out;
+  }
+
+  #indra-net-svg :global(.net-node:hover) {
+    stroke: var(--color-accent-soft);
+  }
+
+  #indra-net-svg :global(.net-node.is-lit) {
+    transition: fill 0.15s ease-in, stroke 0.15s ease-in, r 0.15s ease-in;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #indra-net-svg :global(.net-edge),
+    #indra-net-svg :global(.net-node) {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('indra-net-svg') as SVGSVGElement | null;
+  if (svg) {
+    const rows = 4;
+    const cols = 4;
+    const padX = 46;
+    const padY = 40;
+    const w = 440 - padX * 2;
+    const h = 280 - padY * 2;
+
+    // Slightly irregular hand-woven feel: deterministic jitter per node.
+    const jitter = (i: number, amp: number) => (Math.sin(i * 12.9898) * 43758.5453 % 1) * amp;
+
+    type Node = { x: number; y: number; id: number };
+    const nodes: Node[] = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const id = r * cols + c;
+        const jx = jitter(id, 10) - 5;
+        const jy = jitter(id + 100, 10) - 5;
+        nodes.push({
+          id,
+          x: padX + (w / (cols - 1)) * c + jx,
+          y: padY + (h / (rows - 1)) * r + jy,
+        });
+      }
+    }
+
+    type Edge = { a: number; b: number; el?: SVGLineElement };
+    const edges: Edge[] = [];
+    const idx = (r: number, c: number) => r * cols + c;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (c < cols - 1) edges.push({ a: idx(r, c), b: idx(r, c + 1) });
+        if (r < rows - 1) edges.push({ a: idx(r, c), b: idx(r + 1, c) });
+        if (r < rows - 1 && c < cols - 1) edges.push({ a: idx(r, c), b: idx(r + 1, c + 1) });
+      }
+    }
+
+    const adjacency = new Map<number, Edge[]>();
+    nodes.forEach((n) => adjacency.set(n.id, []));
+    edges.forEach((e) => {
+      adjacency.get(e.a)!.push(e);
+      adjacency.get(e.b)!.push(e);
+    });
+
+    // Draw edges first, so nodes sit visually on top.
+    edges.forEach((e) => {
+      const line = document.createElementNS(NS, 'line');
+      const na = nodes[e.a];
+      const nb = nodes[e.b];
+      line.setAttribute('x1', String(na.x));
+      line.setAttribute('y1', String(na.y));
+      line.setAttribute('x2', String(nb.x));
+      line.setAttribute('y2', String(nb.y));
+      line.setAttribute('class', 'net-edge');
+      svg.appendChild(line);
+      e.el = line;
+    });
+
+    const nodeEls = new Map<number, SVGCircleElement>();
+    nodes.forEach((n) => {
+      const circle = document.createElementNS(NS, 'circle');
+      circle.setAttribute('cx', String(n.x));
+      circle.setAttribute('cy', String(n.y));
+      circle.setAttribute('r', '4.5');
+      circle.setAttribute('class', 'net-node');
+      circle.setAttribute('tabindex', '0');
+      circle.setAttribute('role', 'button');
+      circle.setAttribute('aria-label', 'Light a pattern from this point');
+      svg.appendChild(circle);
+      nodeEls.set(n.id, circle);
+
+      const trigger = () => lightFrom(n.id);
+      circle.addEventListener('click', trigger);
+      circle.addEventListener('keydown', (ev) => {
+        if ((ev as KeyboardEvent).key === 'Enter' || (ev as KeyboardEvent).key === ' ') {
+          ev.preventDefault();
+          trigger();
+        }
+      });
+    });
+
+    function lightFrom(startId: number) {
+      const accent = Math.random() > 0.5 ? 'var(--color-accent)' : 'var(--color-accent-teal)';
+      const accentSoft = accent === 'var(--color-accent)' ? 'var(--color-accent-soft)' : 'var(--color-accent-teal-soft)';
+      const visited = new Set<number>([startId]);
+      let frontier = [startId];
+      const depthLimit = 2 + Math.floor(Math.random() * 3); // 2-4 hops
+      let delay = 0;
+
+      const litNode = (id: number, d: number) => {
+        const el = nodeEls.get(id);
+        if (!el) return;
+        setTimeout(() => {
+          el.classList.add('is-lit');
+          el.setAttribute('fill', accentSoft);
+          el.setAttribute('stroke', accent);
+          el.setAttribute('r', '6');
+          setTimeout(() => {
+            el.classList.remove('is-lit');
+            el.removeAttribute('fill');
+            el.removeAttribute('stroke');
+            el.setAttribute('r', '4.5');
+          }, 1600);
+        }, d);
+      };
+
+      const litEdge = (edge: Edge, d: number) => {
+        const el = edge.el;
+        if (!el) return;
+        setTimeout(() => {
+          el.classList.add('is-lit');
+          el.setAttribute('stroke', accent);
+          setTimeout(() => {
+            el.classList.remove('is-lit');
+            el.removeAttribute('stroke');
+          }, 1600);
+        }, d);
+      };
+
+      litNode(startId, 0);
+
+      for (let depth = 0; depth < depthLimit; depth++) {
+        const nextFrontier: number[] = [];
+        for (const id of frontier) {
+          const options = (adjacency.get(id) || []).filter((e) => {
+            const other = e.a === id ? e.b : e.a;
+            return !visited.has(other);
+          });
+          if (!options.length) continue;
+          // Light a random 1-2 threads out of each frontier point.
+          const pick = options.sort(() => Math.random() - 0.5).slice(0, 1 + Math.floor(Math.random() * 2));
+          pick.forEach((e) => {
+            const other = e.a === id ? e.b : e.a;
+            if (visited.has(other)) return;
+            visited.add(other);
+            delay += 90 + Math.random() * 60;
+            litEdge(e, delay);
+            litNode(other, delay + 80);
+            nextFrontier.push(other);
+          });
+        }
+        frontier = nextFrontier;
+        if (!frontier.length) break;
+      }
+    }
+  }
+</script>

@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppCard from '../../components/AppCard.astro';
+---
+
+<BaseLayout
+  title="Apps — Nara"
+  description="AI Scout and the Dhamma app — tools built to think alongside people, not answer for them."
+>
+  <section class="wrap page-head">
+    <span class="eyebrow">Apps</span>
+    <h1>Tools, not oracles</h1>
+    <p class="intro">
+      Each of these is an attempt to put a useful instrument in someone's hands —
+      not a shortcut around thinking, but something that makes the thinking
+      itself easier to do well.
+    </p>
+  </section>
+
+  <section class="wrap apps-grid">
+    <AppCard
+      name="AI Scout"
+      description="A tool for exploring ideas with AI as a thinking partner, not an answer machine. Built for students trying to sharpen a question before they chase an answer."
+      status="live"
+      statusLabel="live"
+      href="https://lovable.dev"
+    />
+    <AppCard
+      name="Dhamma app"
+      description="A companion for contemplative practice — currently in development, pending teacher review before it's shared more widely. That review is the point, not a delay to apologize for."
+      status="paused"
+      statusLabel="in development"
+    />
+  </section>
+
+  <section class="wrap apps-note">
+    <hr class="thread" />
+    <p class="apps-note__text">
+      AI Scout currently lives on Lovable. It may move to a Nara subdomain
+      later — for now, the link above takes you straight there.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-4);
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+  }
+
+  .apps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    padding-bottom: var(--space-5);
+  }
+
+  .apps-note {
+    padding-bottom: var(--space-6);
+  }
+
+  .apps-note__text {
+    color: var(--color-text-dim);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 780px) {
+    .apps-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

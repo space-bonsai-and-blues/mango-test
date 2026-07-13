@@ -1,0 +1,45 @@
+---
+interface Props {
+  name: string;
+  description: string;
+  status: 'live' | 'paused';
+  statusLabel: string;
+  href?: string;
+}
+
+const { name, description, status, statusLabel, href } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class="app-card card" href={href} target={href ? '_blank' : undefined} rel={href ? 'noopener noreferrer' : undefined}>
+  <div class="app-card__top">
+    <h3>{name}</h3>
+    <span class={`status-pill is-${status}`}>{statusLabel}</span>
+  </div>
+  <p class="app-card__desc">{description}</p>
+  {href && <span class="button app-card__cta">open →</span>}
+</Tag>
+
+<style>
+  .app-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    height: 100%;
+  }
+  .app-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .app-card__desc {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: var(--space-2);
+  }
+  .app-card__cta {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+</style>
