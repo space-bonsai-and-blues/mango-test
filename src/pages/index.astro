@@ -137,6 +137,13 @@ const previewCaseStudies = caseStudies.slice(0, 2);
       flex: 1 1 auto;
       display: flex;
       justify-content: flex-end;
+      /* shift left by roughly half the net's own width (260px max-width,
+         so ~130px), and nudge up slightly so the tip lands near the
+         label's own line instead of a full row below it */
+      padding-right: 130px;
+    }
+    .indra-row__net :global(.indra-net) {
+      margin-top: -8px;
     }
 
     .quad__more {
@@ -172,7 +179,11 @@ const previewCaseStudies = caseStudies.slice(0, 2);
         border-top: 1px solid var(--line);
       }
       .indra-row { flex-direction: column; }
-      .indra-row__net { justify-content: flex-start; }
+      .indra-row__net {
+        justify-content: flex-start;
+        padding-right: 0;
+      }
+      .indra-row__net :global(.indra-net) { margin-top: var(--space-1); }
     }
   </style>
 </BaseLayout>
