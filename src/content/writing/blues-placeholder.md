@@ -1,8 +1,8 @@
 ---
 title: "Sample entry — Blues"
-series: "Blues"
+description: "Placeholder entry so the Writing page has something to list. Replace with real content, or delete."
+publication: "Blues"
 date: 2026-01-01
-excerpt: "Placeholder entry so the Writing page has something to list. Replace with real content, or delete."
 draft: false
 ---
 
