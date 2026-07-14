@@ -1,24 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CaseStudyCard from "../../components/CaseStudyCard.astro";
-
-// Placeholder structure — replace each entry once real case study content
-// is ready. Keep `placeholder` true until then so it reads as "in progress,"
-// not broken.
-const caseStudies = [
-  {
-    client: "Case study one",
-    focus: "Systemic thinking",
-    summary: "A short description of the engagement, the systemic approach used, and the outcome — once written.",
-    placeholder: true,
-  },
-  {
-    client: "Case study two",
-    focus: "Social innovation",
-    summary: "A short description of the engagement, the systemic approach used, and the outcome — once written.",
-    placeholder: true,
-  },
-];
+import { caseStudies } from "../../data/case-studies";
 ---
 
 <BaseLayout

@@ -1,22 +1,29 @@
 ---
-// A small net of jewels: tap a node and a different pattern of
-// connections lights each time. No fixed "correct" pattern —
-// deliberately illustrates the Cynefin Complex domain, where
-// cause and effect can only be understood in retrospect.
+// A net of jewels at irregular depths: tap a point and a different pattern
+// of connections lights — a different colour combination each time too.
+// No fixed "correct" pattern — deliberately illustrates the Cynefin Complex
+// domain, where cause and effect can only be understood in retrospect.
+//
+// The layout is intentionally irregular rather than a tidy circle: real
+// interdependence doesn't arrange itself symmetrically. Size, opacity, and
+// a soft glow on each node stand in for depth — a full 3D render felt like
+// more machinery than a homepage accent needs, but the same "jewels at
+// varying distance, each reflecting the others" idea comes through with
+// these lighter cues.
 const nodes = [
-  { id: "n0", x: 150, y: 150, r: 7 }, // centre jewel
-  { id: "n1", x: 150.0, y: 40.0, r: 5 },
-  { id: "n2", x: 205.0, y: 54.7, r: 5 },
-  { id: "n3", x: 245.3, y: 95.0, r: 5 },
-  { id: "n4", x: 260.0, y: 150.0, r: 5 },
-  { id: "n5", x: 245.3, y: 205.0, r: 5 },
-  { id: "n6", x: 205.0, y: 245.3, r: 5 },
-  { id: "n7", x: 150.0, y: 260.0, r: 5 },
-  { id: "n8", x: 95.0, y: 245.3, r: 5 },
-  { id: "n9", x: 54.7, y: 205.0, r: 5 },
-  { id: "n10", x: 40.0, y: 150.0, r: 5 },
-  { id: "n11", x: 54.7, y: 95.0, r: 5 },
-  { id: "n12", x: 95.0, y: 54.7, r: 5 },
+  { id: "n0", x: 150, y: 150, r: 8, depth: 1.3 }, // centre jewel — closest
+  { id: "n1", x: 144.5, y: 69.1, r: 5, depth: 1.04 },
+  { id: "n2", x: 186.6, y: 52.5, r: 4.4, depth: 0.87 },
+  { id: "n3", x: 228.8, y: 84.5, r: 3.6, depth: 0.67 },
+  { id: "n4", x: 226.2, y: 148.1, r: 3.8, depth: 0.7 },
+  { id: "n5", x: 257.0, y: 207.7, r: 3.9, depth: 0.72 },
+  { id: "n6", x: 214.6, y: 238.6, r: 5.8, depth: 1.22 },
+  { id: "n7", x: 147.2, y: 245.8, r: 5.9, depth: 1.24 },
+  { id: "n8", x: 107.7, y: 266.0, r: 4.3, depth: 0.82 },
+  { id: "n9", x: 87.5, y: 198.5, r: 4.4, depth: 0.84 },
+  { id: "n10", x: 67.8, y: 140.0, r: 5.2, depth: 1.0 },
+  { id: "n11", x: 70.9, y: 98.5, r: 5.1, depth: 0.98 },
+  { id: "n12", x: 101.8, y: 91.8, r: 4.1, depth: 0.77 },
 ];
 
 const spokes = Array.from({ length: 12 }, (_, i) => ["n0", `n${i + 1}`]);
@@ -41,6 +48,15 @@ const pointFor = (id: string) => nodes.find((n) => n.id === id)!;
     role="group"
     aria-label="Indra's net — an interactive diagram. Select any point to see a different set of connections light up."
   >
+    <defs>
+      <filter id="indra-glow" x="-120%" y="-120%" width="340%" height="340%">
+        <feGaussianBlur stdDeviation="4.2" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
     <g class="edges">
       {edges.map(([a, b]) => {
         const pa = pointFor(a);
@@ -63,9 +79,11 @@ const pointFor = (id: string) => nodes.find((n) => n.id === id)!;
         <circle
           class="node"
           data-node={n.id}
+          data-depth={n.depth}
           cx={n.x}
           cy={n.y}
           r={n.r}
+          style={`opacity:${0.45 + n.depth * 0.35}`}
           tabindex="0"
           role="button"
           aria-label={n.id === "n0" ? "Centre point" : `Point ${n.id.slice(1)}`}
@@ -78,6 +96,10 @@ const pointFor = (id: string) => nodes.find((n) => n.id === id)!;
 
 <script>
   type Edge = { a: string; b: string; el: SVGLineElement };
+
+  // Jewel palette for lit states — green, blue, and violet, cycling per hop
+  // so a single tap can surface more than one of the net's colours at once.
+  const JEWEL_COLORS = ["var(--moss-bright)", "var(--indigo)", "var(--violet)"];
 
   function wireUp(container: Element) {
     const svg = container.querySelector("svg")!;
@@ -103,8 +125,14 @@ const pointFor = (id: string) => nodes.find((n) => n.id === id)!;
     function clearActive() {
       activeTimers.forEach((t) => window.clearTimeout(t));
       activeTimers = [];
-      edgeEls.forEach((el) => el.classList.remove("lit"));
-      nodeEls.forEach((el) => el.classList.remove("lit"));
+      edgeEls.forEach((el) => {
+        el.classList.remove("lit");
+        el.style.removeProperty("--jewel");
+      });
+      nodeEls.forEach((el) => {
+        el.classList.remove("lit");
+        el.style.removeProperty("--jewel");
+      });
     }
 
     function otherEnd(edge: Edge, from: string) {
@@ -129,17 +157,22 @@ const pointFor = (id: string) => nodes.find((n) => n.id === id)!;
       }
 
       path.forEach((step, i) => {
+        const color = JEWEL_COLORS[i % JEWEL_COLORS.length];
         const t = window.setTimeout(() => {
           const nodeEl = svg.querySelector<SVGCircleElement>(`circle[data-node="${step.node}"]`);
+          nodeEl?.style.setProperty("--jewel", color);
           nodeEl?.classList.add("lit");
-          if (step.edge) step.edge.el.classList.add("lit");
-        }, i * 110);
+          if (step.edge) {
+            step.edge.el.style.setProperty("--jewel", color);
+            step.edge.el.classList.add("lit");
+          }
+        }, i * 130);
         activeTimers.push(t);
       });
 
       const fadeTimer = window.setTimeout(() => {
         clearActive();
-      }, path.length * 110 + 1500);
+      }, path.length * 130 + 1600);
       activeTimers.push(fadeTimer);
     }
 
@@ -170,26 +203,29 @@ const pointFor = (id: string) => nodes.find((n) => n.id === id)!;
   .edges line {
     stroke: var(--line);
     stroke-width: 1;
-    transition: stroke 0.4s ease, stroke-width 0.4s ease, opacity 0.4s ease;
+    transition: stroke 0.4s ease, stroke-width 0.4s ease, filter 0.4s ease;
   }
   .edges line.lit {
-    stroke: var(--thread);
-    stroke-width: 1.4;
+    stroke: var(--jewel, var(--thread));
+    stroke-width: 1.6;
+    filter: url(#indra-glow);
   }
   .node {
     fill: var(--paper-dim);
     stroke: var(--ink-soft);
     stroke-width: 1;
     cursor: pointer;
-    transition: fill 0.35s ease, stroke 0.35s ease, r 0.35s ease;
+    transition: fill 0.35s ease, stroke 0.35s ease, r 0.35s ease, filter 0.35s ease;
   }
   .node:hover, .node:focus-visible {
     fill: var(--moss-bright);
     outline: none;
   }
   .node.lit {
-    fill: var(--brass);
-    stroke: var(--brass);
+    fill: var(--jewel, var(--brass));
+    stroke: var(--jewel, var(--brass));
+    r: 7.5;
+    filter: url(#indra-glow);
   }
   .indra-net__caption {
     margin-top: var(--space-1);
