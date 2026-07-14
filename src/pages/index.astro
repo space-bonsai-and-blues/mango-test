@@ -4,6 +4,7 @@ import AppCard from "../components/AppCard.astro";
 import CaseStudyCard from "../components/CaseStudyCard.astro";
 import WritingCard from "../components/WritingCard.astro";
 import IndraNet from "../components/IndraNet.astro";
+import AmbientNet from "../components/AmbientNet.astro";
 import { getCollection } from "astro:content";
 import { caseStudies } from "../data/case-studies";
 
@@ -16,11 +17,14 @@ const previewCaseStudies = caseStudies.slice(0, 2);
 
 <BaseLayout title="Nara">
   <section class="hero wrap">
-    <h1>Different ways of finding order in complexity.</h1>
-    <p class="measure hero__dek">
-      Systemic thinking consulting, two apps built in conversation with AI, and a
-      writing practice that keeps a record of the whole attempt.
-    </p>
+    <AmbientNet />
+    <div class="hero__content">
+      <h1>Different ways of finding order in complexity.</h1>
+      <p class="measure hero__dek">
+        Systemic thinking consulting, two apps built in conversation with AI, and a
+        writing practice that keeps a record of the whole attempt.
+      </p>
+    </div>
   </section>
 
   <section class="quad wrap">
@@ -78,7 +82,17 @@ const previewCaseStudies = caseStudies.slice(0, 2);
   </section>
 
   <style>
-    .hero { padding: var(--space-5) 0 var(--space-4); }
+    .hero {
+      position: relative;
+      padding: var(--space-6) 0 var(--space-5);
+      min-height: 340px;
+      display: flex;
+      align-items: center;
+    }
+    .hero__content {
+      position: relative;
+      z-index: 1;
+    }
     .hero__dek { margin-top: var(--space-2); font-size: 1.15rem; color: var(--ink-soft); }
 
     .quad {
