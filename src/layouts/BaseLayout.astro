@@ -1,14 +1,20 @@
 ---
 import "../styles/global.css";
+import AmbientNet from "../components/AmbientNet.astro";
 
 interface Props {
   title: string;
   description?: string;
+  // When true, the ambient net backdrop spans the header + hero region
+  // together, so the pattern reads as reaching the true top of the page
+  // rather than stopping at the hero's own box. Homepage-only.
+  ambientBackdrop?: boolean;
 }
 
 const {
   title,
   description = "Nara — systemic thinking, social innovation, and contemplative practice, in conversation with AI.",
+  ambientBackdrop = false,
 } = Astro.props;
 
 const nav = [
@@ -35,18 +41,22 @@ const nav = [
     />
   </head>
   <body>
-    <header class="site-header">
-      <div class="wrap site-header__inner">
-        <a class="wordmark" href="/">Nara</a>
-        <nav aria-label="Primary">
-          <ul>
-            {nav.map((item) => (
-              <li><a href={item.href}>{item.label}</a></li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <div class="top-band">
+      {ambientBackdrop && <AmbientNet />}
+      <header class="site-header">
+        <div class="wrap site-header__inner">
+          <a class="wordmark" href="/">Nara</a>
+          <nav aria-label="Primary">
+            <ul>
+              {nav.map((item) => (
+                <li><a href={item.href}>{item.label}</a></li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </header>
+      <slot name="hero" />
+    </div>
 
     <main>
       <slot />
@@ -63,8 +73,13 @@ const nav = [
     </footer>
 
     <style>
+      .top-band {
+        position: relative;
+      }
       .site-header {
         padding: var(--space-3) 0 var(--space-2);
+        position: relative;
+        z-index: 1;
       }
       .site-header__inner {
         display: flex;

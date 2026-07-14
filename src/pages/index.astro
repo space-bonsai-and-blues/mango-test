@@ -4,7 +4,6 @@ import AppCard from "../components/AppCard.astro";
 import CaseStudyCard from "../components/CaseStudyCard.astro";
 import WritingCard from "../components/WritingCard.astro";
 import IndraNet from "../components/IndraNet.astro";
-import AmbientNet from "../components/AmbientNet.astro";
 import { getCollection } from "astro:content";
 import { caseStudies } from "../data/case-studies";
 
@@ -15,9 +14,8 @@ const writing = (await getCollection("writing", ({ data }) => !data.draft))
 const previewCaseStudies = caseStudies.slice(0, 2);
 ---
 
-<BaseLayout title="Nara">
-  <section class="hero wrap">
-    <AmbientNet />
+<BaseLayout title="Nara" ambientBackdrop={true}>
+  <section slot="hero" class="hero wrap">
     <div class="hero__content">
       <h1>Tending order in complexity.</h1>
       <p class="hero__dek">
