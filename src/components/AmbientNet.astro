@@ -5,28 +5,28 @@
 // should read as texture, not compete with the interactive net further
 // down the page, which stays the one place attention is asked for.
 const points = [
-  { id: "p0", x: 178.4, y: 327.3 },
-  { id: "p1", x: 629.6, y: 230.4 },
-  { id: "p2", x: 227.4, y: 374.6 },
-  { id: "p3", x: 795.5, y: 245.7 },
-  { id: "p4", x: 504.9, y: 118.6 },
-  { id: "p5", x: 23.1, y: 180.7 },
-  { id: "p6", x: 581.9, y: 41.9 },
-  { id: "p7", x: 782.0, y: 116.8 },
-  { id: "p8", x: 243.4, y: 29.5 },
-  { id: "p9", x: 977.7, y: 349.8 },
-  { id: "p10", x: 860.0, y: 293.3 },
-  { id: "p11", x: 497.7, y: 63.3 },
-  { id: "p12", x: 933.9, y: 179.5 },
-  { id: "p13", x: 168.6, y: 386.1 },
-  { id: "p14", x: 139.9, y: 436.9 },
-  { id: "p15", x: 455.0, y: 263.9 },
-  { id: "p16", x: 349.2, y: 233.0 },
-  { id: "p17", x: 851.3, y: 118.0 },
-  { id: "p18", x: 950.0, y: 421.2 },
-  { id: "p19", x: 744.6, y: 360.9 },
-  { id: "p20", x: 577.5, y: 345.7 },
-  { id: "p21", x: 137.6, y: 229.1 },
+  { id: "p0", x: 178.4, y: 350.9 },
+  { id: "p1", x: 629.6, y: 236.7 },
+  { id: "p2", x: 227.4, y: 406.6 },
+  { id: "p3", x: 795.5, y: 254.7 },
+  { id: "p4", x: 504.9, y: 105.0 },
+  { id: "p5", x: 23.1, y: 178.1 },
+  { id: "p6", x: 581.9, y: 14.6 },
+  { id: "p7", x: 782.0, y: 102.9 },
+  { id: "p8", x: 243.4, y: 0.0 },
+  { id: "p9", x: 977.7, y: 377.4 },
+  { id: "p10", x: 860.0, y: 310.8 },
+  { id: "p11", x: 497.7, y: 39.8 },
+  { id: "p12", x: 933.9, y: 176.7 },
+  { id: "p13", x: 168.6, y: 420.1 },
+  { id: "p14", x: 139.9, y: 480.0 },
+  { id: "p15", x: 455.0, y: 276.2 },
+  { id: "p16", x: 349.2, y: 239.8 },
+  { id: "p17", x: 851.3, y: 104.3 },
+  { id: "p18", x: 950.0, y: 461.5 },
+  { id: "p19", x: 744.6, y: 390.5 },
+  { id: "p20", x: 577.5, y: 372.5 },
+  { id: "p21", x: 137.6, y: 235.2 },
 ];
 
 const edges = [
@@ -55,7 +55,7 @@ const twinkleIds = new Set(["p1", "p4", "p10", "p16", "p20", "p7"]);
 ---
 
 <div class="ambient-net" aria-hidden="true">
-  <svg viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid slice">
+  <svg viewBox="0 0 1000 480" preserveAspectRatio="none">
     <g class="ambient-net__edges">
       {edges.map(([a, b], i) => {
         const pa = pointFor(a);
