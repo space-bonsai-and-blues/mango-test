@@ -1,14 +1,16 @@
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
 const writing = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
+  loader: glob({ pattern: "**/*.md", base: "./src/content/writing" }),
   schema: z.object({
     title: z.string(),
-    series: z.enum(['Space Bonsai', 'Blues', 'Other']).default('Other'),
+    description: z.string(),
     date: z.coerce.date(),
-    excerpt: z.string().optional(),
-    draft: z.boolean().default(false),
+    // Where else this piece was published, e.g. "Space Bonsai and Blues"
+    publication: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    draft: z.boolean().optional().default(false),
   }),
 });
 

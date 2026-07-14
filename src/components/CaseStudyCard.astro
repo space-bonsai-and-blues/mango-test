@@ -1,26 +1,35 @@
 ---
 interface Props {
   client: string;
+  focus: string;
   summary: string;
-  domain: string;
+  placeholder?: boolean;
 }
-
-const { client, summary, domain } = Astro.props;
+const { client, focus, summary, placeholder = false } = Astro.props;
 ---
 
-<div class="case-card card">
-  <span class="eyebrow">{domain}</span>
+<article class="cs-card" data-placeholder={placeholder}>
+  <p class="eyebrow">{focus}</p>
   <h3>{client}</h3>
-  <p class="case-card__summary">{summary}</p>
-</div>
+  <p class="measure">{summary}</p>
+</article>
 
 <style>
-  .case-card {
-    height: 100%;
+  .cs-card {
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--line);
   }
-  .case-card__summary {
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 0;
+  .cs-card:first-child { border-top: none; padding-top: 0; }
+  .cs-card h3 { margin: 0.2em 0 0.4em; }
+  .cs-card[data-placeholder="true"] {
+    opacity: 0.68;
+  }
+  .cs-card[data-placeholder="true"] h3::after {
+    content: " — coming soon";
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-style: normal;
+    text-transform: none;
+    color: var(--ink-soft);
   }
 </style>

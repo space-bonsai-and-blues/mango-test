@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 interface Props {
   title: string;
   description?: string;
@@ -6,38 +8,42 @@ interface Props {
 
 const {
   title,
-  description = "Nara — consulting, apps, and writing at the intersection of systemic thinking, contemplative practice, and AI.",
+  description = "Nara — systemic thinking, social innovation, and contemplative practice, in conversation with AI.",
 } = Astro.props;
+
+const nav = [
+  { href: "/apps", label: "Apps" },
+  { href: "/case-studies", label: "Case studies" },
+  { href: "/writing", label: "Writing" },
+];
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <title>{title}</title>
+    <title>{title} · Nara</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,380..600;1,9..144,380..500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-
-    <style>
-      @import '../styles/global.css';
-    </style>
   </head>
   <body>
     <header class="site-header">
-      <div class="wrap site-header__row">
-        <a href="/" class="site-header__mark">nara</a>
-        <nav class="site-nav">
-          <a href="/apps">apps</a>
-          <a href="/case-studies">case studies</a>
-          <a href="/writing">writing</a>
+      <div class="wrap site-header__inner">
+        <a class="wordmark" href="/">Nara</a>
+        <nav aria-label="Primary">
+          <ul>
+            {nav.map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+          </ul>
         </nav>
       </div>
     </header>
@@ -47,54 +53,83 @@ const {
     </main>
 
     <footer class="site-footer">
-      <div class="wrap site-footer__row">
-        <span class="eyebrow" style="margin:0;">© {new Date().getFullYear()} Nara</span>
-        <span class="eyebrow" style="margin:0;">built with Astro</span>
+      <div class="wrap site-footer__inner">
+        <p class="eyebrow">© {new Date().getFullYear()} Nara</p>
+        <ul class="site-footer__links">
+          <li><a href="/writing">Space Bonsai and Blues</a></li>
+          <li><a href="mailto:hello@example.com">Get in touch</a></li>
+        </ul>
       </div>
     </footer>
 
     <style>
       .site-header {
-        padding: var(--space-2) 0;
-        border-bottom: 1px solid var(--color-border);
+        padding: var(--space-3) 0 var(--space-2);
       }
-      .site-header__row {
+      .site-header__inner {
         display: flex;
-        align-items: center;
+        align-items: baseline;
         justify-content: space-between;
+        gap: var(--space-2);
+        flex-wrap: wrap;
       }
-      .site-header__mark {
+      .wordmark {
         font-family: var(--font-display);
-        font-size: 1.15rem;
+        font-style: italic;
+        font-size: 1.4rem;
         text-decoration: none;
-        color: var(--color-accent-soft);
-        letter-spacing: 0.02em;
       }
-      .site-nav {
+      nav ul {
         display: flex;
         gap: var(--space-3);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      nav a {
         font-family: var(--font-mono);
-        font-size: 0.82rem;
-        letter-spacing: 0.03em;
-      }
-      .site-nav a {
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
         text-decoration: none;
-        color: var(--color-text-muted);
-        transition: color 0.2s var(--ease);
+        color: var(--ink-soft);
+        border-bottom: 1px solid transparent;
+        padding-bottom: 2px;
+        transition: border-color 0.15s ease, color 0.15s ease;
       }
-      .site-nav a:hover {
-        color: var(--color-accent);
+      nav a:hover, nav a:focus-visible {
+        color: var(--ink);
+        border-bottom-color: var(--moss);
       }
+
+      main {
+        min-height: 60vh;
+      }
+
       .site-footer {
-        border-top: 1px solid var(--color-border);
-        padding: var(--space-3) 0;
         margin-top: var(--space-6);
+        padding: var(--space-3) 0 var(--space-4);
+        border-top: 1px solid var(--line);
       }
-      .site-footer__row {
+      .site-footer__inner {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--space-2);
       }
+      .site-footer__links {
+        display: flex;
+        gap: var(--space-3);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+      }
+      .site-footer__links a { text-decoration: none; color: var(--ink-soft); }
+      .site-footer__links a:hover { color: var(--ink); }
     </style>
   </body>
 </html>

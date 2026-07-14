@@ -1,0 +1,46 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  date: Date;
+  publication?: string;
+}
+const { href, title, description, date, publication } = Astro.props;
+const formatted = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<article class="writing-card">
+  <a href={href} class="writing-card__link">
+    <p class="eyebrow">
+      {formatted}{publication && ` · ${publication}`}
+    </p>
+    <h3>{title}</h3>
+    <p class="measure">{description}</p>
+  </a>
+</article>
+
+<style>
+  .writing-card {
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--line);
+  }
+  .writing-card:first-child { border-top: none; padding-top: 0; }
+  .writing-card__link {
+    display: block;
+    text-decoration: none;
+  }
+  .writing-card h3 {
+    margin: 0.3em 0 0.4em;
+    transition: color 0.15s ease;
+  }
+  .writing-card__link:hover h3,
+  .writing-card__link:focus-visible h3 {
+    color: var(--moss);
+  }
+  .writing-card p.measure { margin-bottom: 0; color: var(--ink-soft); }
+</style>

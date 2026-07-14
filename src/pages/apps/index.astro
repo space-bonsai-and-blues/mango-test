@@ -1,77 +1,110 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import AppCard from '../../components/AppCard.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="Apps — Nara"
-  description="AI Scout and the Dhamma app — tools built to think alongside people, not answer for them."
+  title="Apps"
+  description="AI Scout and the Dhamma app — two apps built in conversation with AI."
 >
   <section class="wrap page-head">
-    <span class="eyebrow">Apps</span>
-    <h1>Tools, not oracles</h1>
-    <p class="intro">
-      Each of these is an attempt to put a useful instrument in someone's hands —
-      not a shortcut around thinking, but something that makes the thinking
-      itself easier to do well.
+    <p class="eyebrow">Apps</p>
+    <h1>Built in conversation with AI.</h1>
+    <p class="measure page-head__dek">
+      Both apps live on Lovable for now. Each link opens the app in its own tab —
+      nothing here is rebuilt or embedded, just pointed to.
     </p>
   </section>
 
-  <section class="wrap apps-grid">
-    <AppCard
-      name="AI Scout"
-      description="A tool for exploring ideas with AI as a thinking partner, not an answer machine. Built for students trying to sharpen a question before they chase an answer."
-      status="live"
-      statusLabel="live"
-      href="https://lovable.dev"
-    />
-    <AppCard
-      name="Dhamma app"
-      description="A companion for contemplative practice — currently in development, pending teacher review before it's shared more widely. That review is the point, not a delay to apologize for."
-      status="paused"
-      statusLabel="in development"
-    />
+  <section id="ai-scout" class="wrap app-section">
+    <div class="app-section__meta">
+      <p class="eyebrow">Live</p>
+      <h2>AI Scout</h2>
+    </div>
+    <div class="app-section__body measure">
+      <p>
+        AI Scout is a structured self-reflection guide, not a coach and not a
+        chatbot that tries to solve anything for you. It offers two paths:
+      </p>
+      <ul>
+        <li>
+          <strong>Navigator</strong> — for when you feel disoriented and want
+          your way back to clarity.
+        </li>
+        <li>
+          <strong>Explorer</strong> — for when you're curious and looking for
+          direction, starting from open reflection rather than a fixed
+          question set.
+        </li>
+      </ul>
+      <p>
+        The guiding principle is non-directive: the app illuminates, it
+        doesn't conclude on your behalf. Every reflection it offers back
+        traces directly to words you chose yourself.
+      </p>
+      <a class="cta" href="https://lovable.dev" target="_blank" rel="noopener noreferrer">
+        Open AI Scout ↗
+      </a>
+    </div>
   </section>
 
-  <section class="wrap apps-note">
-    <hr class="thread" />
-    <p class="apps-note__text">
-      AI Scout currently lives on Lovable. It may move to a Nara subdomain
-      later — for now, the link above takes you straight there.
-    </p>
+  <section id="dhamma" class="wrap app-section">
+    <div class="app-section__meta">
+      <p class="eyebrow">In development</p>
+      <h2>Dhamma — Teachings for Clarity</h2>
+    </div>
+    <div class="app-section__body measure">
+      <p>
+        This app brings teachings from the Thai Forest Tradition to
+        contemporary lay practice — meeting people where their difficulty
+        actually is, then offering a sourced teaching, a plain-language
+        principle, and a bridge back into daily practice. The intent is that
+        it works like a raft: something that helps you cross, not something
+        designed to keep you on it.
+      </p>
+      <p>
+        It's currently paused. The parts that matter most — teacher
+        attribution, and language for moments of real distress — are being
+        held until teachers in the tradition can confirm them directly. That
+        pause is deliberate, not a stall.
+      </p>
+      <p class="app-section__status">Not yet open to users.</p>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .page-head {
-    padding-top: var(--space-5);
-    padding-bottom: var(--space-4);
-  }
+  .page-head { padding: var(--space-5) 0 var(--space-4); }
+  .page-head__dek { margin-top: var(--space-2); color: var(--ink-soft); }
 
-  .intro {
-    color: var(--color-text-muted);
-    font-size: 1.05rem;
-  }
-
-  .apps-grid {
+  .app-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2);
-    padding-bottom: var(--space-5);
+    grid-template-columns: 220px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--line);
   }
-
-  .apps-note {
-    padding-bottom: var(--space-6);
-  }
-
-  .apps-note__text {
-    color: var(--color-text-dim);
+  .app-section__meta h2 { margin-top: 0.2em; }
+  .app-section__body ul { padding-left: 1.2em; }
+  .app-section__body li { margin-bottom: 0.5em; }
+  .cta {
+    display: inline-block;
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
     font-size: 0.9rem;
+    padding: 0.6em 1.1em;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .cta:hover { background: var(--ink); color: var(--paper); }
+  .app-section__status {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
   }
 
-  @media (max-width: 780px) {
-    .apps-grid {
-      grid-template-columns: 1fr;
-    }
+  @media (max-width: 700px) {
+    .app-section { grid-template-columns: 1fr; }
   }
 </style>

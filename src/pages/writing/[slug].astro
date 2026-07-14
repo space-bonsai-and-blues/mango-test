@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("writing", ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const formatted = entry.data.date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <article class="wrap post">
+    <a class="post__back" href="/writing">← All writing</a>
+    <p class="eyebrow post__meta">
+      {formatted}{entry.data.publication && ` · ${entry.data.publication}`}
+    </p>
+    <h1>{entry.data.title}</h1>
+    <div class="post__body measure">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post { padding: var(--space-5) 0 var(--space-6); }
+  .post__back {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+  .post__back:hover { color: var(--ink); }
+  .post__meta { margin-top: var(--space-3); }
+  .post h1 { margin: 0.3em 0 var(--space-3); }
+  .post__body :global(p) { margin-bottom: 1.2em; }
+  .post__body :global(a) { text-decoration-color: var(--line); }
+  .post__body :global(a:hover) { text-decoration-color: var(--moss); }
+</style>

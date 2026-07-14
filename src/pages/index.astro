@@ -1,180 +1,140 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import AppCard from '../components/AppCard.astro';
-import CaseStudyCard from '../components/CaseStudyCard.astro';
-import IndraNet from '../components/IndraNet.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AppCard from "../components/AppCard.astro";
+import CaseStudyCard from "../components/CaseStudyCard.astro";
+import WritingCard from "../components/WritingCard.astro";
+import IndraNet from "../components/IndraNet.astro";
+import { getCollection } from "astro:content";
 
-const writingEntries = (await getCollection('writing', ({ data }) => !data.draft))
+const writing = (await getCollection("writing", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 ---
 
 <BaseLayout title="Nara">
-  <section class="wrap home-grid">
-    <div class="quadrant quadrant--apps">
-      <span class="eyebrow">Apps</span>
-      <h2>Things people can use today</h2>
-      <div class="quadrant__cards">
-        <AppCard
-          name="AI Scout"
-          description="A tool for exploring ideas with AI as a thinking partner, not an answer machine."
-          status="live"
-          statusLabel="live"
-          href="https://lovable.dev"
-        />
-        <AppCard
-          name="Dhamma app"
-          description="A companion for contemplative practice, currently in development pending teacher review."
-          status="paused"
-          statusLabel="in development"
-        />
-      </div>
-      <a class="quadrant__more" href="/apps">all apps →</a>
+  <section class="hero wrap">
+    <h1>Different ways of finding order in complexity.</h1>
+    <p class="measure hero__dek">
+      Systemic thinking consulting, two apps built in conversation with AI, and a
+      writing practice that keeps a record of the whole attempt.
+    </p>
+  </section>
+
+  <section class="grid-top wrap">
+    <div class="grid-top__col">
+      <p class="eyebrow">Apps</p>
+      <AppCard
+        name="AI Scout"
+        status="live"
+        statusLabel="Live"
+        description="A structured self-reflection guide with two paths — one for finding clarity when you feel lost, one for finding direction when you're curious. Built on Lovable."
+        href="/apps#ai-scout"
+      />
+      <AppCard
+        name="Dhamma — Teachings for Clarity"
+        status="paused"
+        statusLabel="In development"
+        description="Buddhist teachings made accessible for contemporary lay practice, paused pending review from teachers in the Thai Forest Tradition."
+        href="/apps#dhamma"
+      />
     </div>
 
-    <div class="quadrant quadrant--case-studies">
-      <span class="eyebrow">Case studies</span>
-      <h2>Working with organizations on hard problems</h2>
-      <div class="quadrant__cards">
-        <CaseStudyCard
-          client="Case study coming soon"
-          domain="Systemic design"
-          summary="Detailed write-ups of consulting engagements are being prepared — check back, or ask in person."
-        />
-      </div>
-      <a class="quadrant__more" href="/case-studies">all case studies →</a>
-    </div>
-
-    <div class="quadrant quadrant--writing">
-      <span class="eyebrow">Writing</span>
-      <h2>Space Bonsai and Blues</h2>
-      <ul class="writing-list">
-        {writingEntries.map((entry) => (
-          <li>
-            <a href={`/writing/${entry.id}`}>
-              <span class="writing-list__series">{entry.data.series}</span>
-              <span class="writing-list__title">{entry.data.title}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <a class="quadrant__more" href="/writing">all writing →</a>
-    </div>
-
-    <div class="quadrant quadrant--net">
-      <IndraNet />
-    </div>
-
-    <div class="quadrant quadrant--about">
-      <p class="about-line">
-        Consulting, apps, and writing — different ways of finding and building
-        order amid complexity.
-      </p>
-      <a class="quadrant__more" href="mailto:hello@example.com">get in touch →</a>
+    <div class="grid-top__col">
+      <p class="eyebrow">Case studies</p>
+      <CaseStudyCard
+        client="Selected consulting work"
+        focus="Systemic thinking · Social innovation"
+        summary="Case studies are being prepared. In the meantime, get in touch directly and I'm glad to walk through relevant work."
+        placeholder={true}
+      />
+      <p class="grid-top__more"><a href="/case-studies">More about the consulting practice →</a></p>
     </div>
   </section>
+
+  <section class="writing-band wrap">
+    <div class="writing-band__head">
+      <p class="eyebrow">Writing — Space Bonsai and Blues</p>
+      <a class="writing-band__all" href="/writing">All writing →</a>
+    </div>
+    <div class="writing-band__list">
+      {writing.map((entry) => (
+        <WritingCard
+          href={`/writing/${entry.id}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          date={entry.data.date}
+          publication={entry.data.publication}
+        />
+      ))}
+    </div>
+  </section>
+
+  <section class="closing wrap">
+    <div class="closing__net">
+      <IndraNet />
+    </div>
+    <div class="closing__quiet">
+      <p class="eyebrow">Get in touch</p>
+      <p class="measure">
+        Consulting inquiries and everything else:
+        <a href="mailto:hello@example.com">hello@example.com</a>
+      </p>
+    </div>
+  </section>
+
+  <style>
+    .hero { padding: var(--space-5) 0 var(--space-4); }
+    .hero__dek { margin-top: var(--space-2); font-size: 1.15rem; color: var(--ink-soft); }
+
+    .grid-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      padding: var(--space-4) 0;
+      border-top: 1px solid var(--line);
+    }
+    .grid-top__more {
+      margin-top: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .grid-top__more a { text-decoration: underline; text-decoration-color: var(--line); }
+    .grid-top__more a:hover { text-decoration-color: var(--moss); }
+
+    .writing-band {
+      padding: var(--space-4) 0;
+      border-top: 1px solid var(--line);
+    }
+    .writing-band__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+    .writing-band__all {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-decoration: underline;
+      text-decoration-color: var(--line);
+    }
+    .writing-band__all:hover { text-decoration-color: var(--moss); }
+
+    .closing {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: var(--space-4);
+      padding: var(--space-5) 0 var(--space-3);
+      border-top: 1px solid var(--line);
+    }
+    .closing__quiet { justify-self: end; text-align: right; }
+
+    @media (max-width: 780px) {
+      .grid-top { grid-template-columns: 1fr; gap: var(--space-4); }
+      .closing { grid-template-columns: 1fr; }
+      .closing__quiet { justify-self: start; text-align: left; }
+    }
+  </style>
 </BaseLayout>
-
-<style>
-  .home-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'apps case-studies'
-      'writing writing'
-      'net about';
-    gap: var(--space-4) var(--space-5);
-    padding-top: var(--space-5);
-    padding-bottom: var(--space-6);
-  }
-
-  .quadrant--apps { grid-area: apps; }
-  .quadrant--case-studies { grid-area: case-studies; }
-  .quadrant--writing { grid-area: writing; border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
-  .quadrant--net { grid-area: net; }
-  .quadrant--about {
-    grid-area: about;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: var(--space-2);
-  }
-
-  .quadrant__cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2);
-    margin-bottom: var(--space-2);
-  }
-
-  .quadrant--case-studies .quadrant__cards {
-    grid-template-columns: 1fr;
-  }
-
-  .quadrant__more {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    text-decoration: none;
-    color: var(--color-accent);
-  }
-
-  .writing-list {
-    list-style: none;
-    margin: 0 0 var(--space-2);
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .writing-list a {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-2);
-    text-decoration: none;
-    padding-bottom: var(--space-1);
-    border-bottom: 1px solid var(--color-border);
-    transition: border-color 0.2s var(--ease);
-  }
-
-  .writing-list a:hover {
-    border-color: var(--color-accent);
-  }
-
-  .writing-list__series {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--color-text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-  }
-
-  .writing-list__title {
-    font-family: var(--font-display);
-    font-size: 1.05rem;
-    text-align: right;
-  }
-
-  .about-line {
-    color: var(--color-text-muted);
-    max-width: 32ch;
-    font-size: 0.95rem;
-  }
-
-  @media (max-width: 780px) {
-    .home-grid {
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        'apps'
-        'case-studies'
-        'writing'
-        'net'
-        'about';
-    }
-    .quadrant__cards {
-      grid-template-columns: 1fr !important;
-    }
-  }
-</style>

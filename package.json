@@ -1,5 +1,5 @@
 {
-  "name": "nara-site",
+  "name": "beneficial-binary",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -12,6 +12,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.0.7"
+    "astro": "^7.0.9"
   }
 }

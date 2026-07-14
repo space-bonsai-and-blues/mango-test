@@ -1,45 +1,61 @@
 ---
 interface Props {
   name: string;
-  description: string;
-  status: 'live' | 'paused';
+  status: "live" | "paused";
   statusLabel: string;
+  description: string;
   href?: string;
 }
-
-const { name, description, status, statusLabel, href } = Astro.props;
-const Tag = href ? 'a' : 'div';
+const { name, status, statusLabel, description, href } = Astro.props;
 ---
 
-<Tag class="app-card card" href={href} target={href ? '_blank' : undefined} rel={href ? 'noopener noreferrer' : undefined}>
-  <div class="app-card__top">
+<article class="app-card" data-status={status}>
+  <div class="app-card__head">
     <h3>{name}</h3>
-    <span class={`status-pill is-${status}`}>{statusLabel}</span>
+    <span class="app-card__status">{statusLabel}</span>
   </div>
-  <p class="app-card__desc">{description}</p>
-  {href && <span class="button app-card__cta">open →</span>}
-</Tag>
+  <p class="measure">{description}</p>
+  {href && (
+    <a class="app-card__link" href={href} target="_blank" rel="noopener noreferrer">
+      Open {name} ↗
+    </a>
+  )}
+</article>
 
 <style>
   .app-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    height: 100%;
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--line);
   }
-  .app-card__top {
+  .app-card:first-child { border-top: none; padding-top: 0; }
+  .app-card__head {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: baseline;
     gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-1);
   }
-  .app-card__desc {
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-    margin-bottom: var(--space-2);
+  .app-card__status {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2em 0.6em;
+    border-radius: var(--radius);
+    color: var(--paper);
+    background: var(--moss);
   }
-  .app-card__cta {
-    margin-top: auto;
-    align-self: flex-start;
+  .app-card[data-status="paused"] .app-card__status {
+    background: var(--paper-dim);
+    color: var(--ink-soft);
   }
+  .app-card__link {
+    display: inline-block;
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+  }
+  .app-card__link:hover { text-decoration-color: var(--moss); }
 </style>
