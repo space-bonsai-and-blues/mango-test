@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://naratends.com/sitemap-index.xml
