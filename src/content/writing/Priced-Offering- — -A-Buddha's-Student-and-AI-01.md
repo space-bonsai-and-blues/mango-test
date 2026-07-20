@@ -1,6 +1,6 @@
 ---
 title: "Priced Offering — A Buddha's Student and AI 01"
-description: "Paying for "Guarantee" to the One Who Teaches "Impermanence"."
+description: 'Paying for "Guarantee" to the One Who Teaches "Impermanence".'
 publication: "Space Bonsai and Blues"
 date: "2026-06-01"
 ---
