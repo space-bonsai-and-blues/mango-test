@@ -1,5 +1,5 @@
 ---
-title: "When AI called me “adversarial”, I had to ask “why" — Reading Each Other: Human and AI 01"
+title: 'When AI called me “adversarial”, I had to ask “why" — Reading Each Other: Human and AI 01'
 description: "Am I imagining it? Or AI is actually behaving very emotionally?"
 publication: "Space Bonsai and Blues"
 date: 2026-05-15
