@@ -2,7 +2,7 @@
 title: "Priced Offering — A Buddha's Student and AI 01"
 description: "Paying for "Guarantee" to the One Who Teaches "Impermanence"."
 publication: "Space Bonsai and Blues"
-date: 2026-06-01
+date: "2026-06-01"
 ---
 
 Exploring the Buddha’s philosophy in the past a few years has been quite an adventure. I’ve visited over hundreds of temples across culture, country and tradition, in hope of having some questions answered about meaning and mind, which I haven’t got much luck. Other than language being a barrier, it’s also a reality that not all people in monastic robes are learnt philosophers, and wisdom is even a higher bar. 
