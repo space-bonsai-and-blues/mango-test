@@ -2,7 +2,7 @@
 title: "What the Questions Were For"
 description: "A two-voice reflection on the friction of clarifying questions, and the clarity that came out on the other side."
 publication: "Human and AI 05"
-date: 2026-07-30
+date: 2026-07-29
 ---
 
 **Nara:**I'm sensing I'm at the edge of feeling annoyed.
