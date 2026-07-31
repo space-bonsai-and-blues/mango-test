@@ -9,6 +9,14 @@ const entries = (
     ({ data }) => !data.draft && data.tags?.includes("case-study")
   )
 ).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// "series" is whichever tag isn't "case-study" itself — e.g. "CSR", "NPO"
+const withSeries = entries.map((entry) => ({
+  entry,
+  series: entry.data.tags?.find((t) => t !== "case-study") ?? "Other",
+}));
+
+const seriesList = [...new Set(withSeries.map((e) => e.series))];
 ---
 
 <BaseLayout
@@ -24,17 +32,27 @@ const entries = (
     </p>
   </section>
 
-  <section class="wrap list">
-    {entries.length === 0 ? (
+  {seriesList.length > 1 && (
+    <section class="wrap filters" aria-label="Filter by series">
+      <button class="filter-btn is-active" data-filter="all">All</button>
+      {seriesList.map((series) => (
+        <button class="filter-btn" data-filter={series}>{series}</button>
+      ))}
+    </section>
+  )}
+
+  <section class="wrap list" id="case-study-list">
+    {withSeries.length === 0 ? (
       <p class="measure">Nothing published yet — check back soon.</p>
     ) : (
-      entries.map((entry) => (
+      withSeries.map(({ entry, series }) => (
         <WritingCard
           href={`/writing/${entry.id}`}
           title={entry.data.title}
           description={entry.data.description}
           date={entry.data.date}
           publication={entry.data.publication}
+          series={series}
         />
       ))
     )}
@@ -51,6 +69,30 @@ const entries = (
 <style>
   .page-head { padding: var(--space-5) 0 var(--space-4); }
   .page-head__dek { margin-top: var(--space-2); color: var(--ink-soft); }
+  .filters {
+    display: flex;
+    gap: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.35em 0.9em;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .filter-btn:hover { color: var(--ink); border-color: var(--moss); }
+  .filter-btn.is-active {
+    color: var(--paper);
+    background: var(--moss);
+    border-color: var(--moss);
+  }
   .list { padding: var(--space-2) 0 var(--space-4); border-top: 1px solid var(--line); }
   .contact-strip {
     padding: var(--space-3) 0 var(--space-4);
@@ -58,3 +100,21 @@ const entries = (
     color: var(--ink-soft);
   }
 </style>
+
+<script>
+  const buttons = document.querySelectorAll(".filter-btn");
+  const cards = document.querySelectorAll("#case-study-list [data-series]");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const filter = btn.dataset.filter;
+      buttons.forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+
+      cards.forEach((card) => {
+        const show = filter === "all" || card.dataset.series === filter;
+        card.style.display = show ? "" : "none";
+      });
+    });
+  });
+</script>
