@@ -5,7 +5,7 @@ import WritingCard from "../components/WritingCard.astro";
 import IndraNet from "../components/IndraNet.astro";
 import { getCollection } from "astro:content";
 
-const writing = (await getCollection("writing", ({ data }) => !data.draft))
+const writing = (await getCollection("writing", ({ data }) => !data.draft && !data.tags?.includes("case-study")))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 2);
 
