@@ -1,7 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import CaseStudyCard from "../../components/CaseStudyCard.astro";
-import { caseStudies } from "../../data/case-studies";
+import WritingCard from "../../components/WritingCard.astro";
+import { getCollection } from "astro:content";
+
+const entries = (
+  await getCollection(
+    "writing",
+    ({ data }) => !data.draft && data.tags?.includes("case-study")
+  )
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout
@@ -12,14 +19,25 @@ import { caseStudies } from "../../data/case-studies";
     <p class="eyebrow">Case studies</p>
     <h1>Consulting, in depth.</h1>
     <p class="measure page-head__dek">
-      This page exists mainly as depth after a conversation already underway —
-      most consulting relationships start in person. Full write-ups are being
-      prepared; in the meantime, get in touch directly.
+      Specific designs from ten years of consulting work, written up as full
+      pieces rather than summaries.
     </p>
   </section>
 
   <section class="wrap list">
-    {caseStudies.map((cs) => <CaseStudyCard {...cs} />)}
+    {entries.length === 0 ? (
+      <p class="measure">Nothing published yet — check back soon.</p>
+    ) : (
+      entries.map((entry) => (
+        <WritingCard
+          href={`/writing/${entry.id}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          date={entry.data.date}
+          publication={entry.data.publication}
+        />
+      ))
+    )}
   </section>
 
   <section class="wrap contact-strip">
