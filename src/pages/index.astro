@@ -1,17 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AppCard from "../components/AppCard.astro";
-import CaseStudyCard from "../components/CaseStudyCard.astro";
 import WritingCard from "../components/WritingCard.astro";
 import IndraNet from "../components/IndraNet.astro";
 import { getCollection } from "astro:content";
-import { caseStudies } from "../data/case-studies";
 
 const writing = (await getCollection("writing", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 2);
 
-const previewCaseStudies = caseStudies.slice(0, 2);
+const previewCaseStudies = (
+  await getCollection(
+    "writing",
+    ({ data }) => !data.draft && data.tags?.includes("case-study")
+  )
+)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
 ---
 
 <BaseLayout title="Nara" ambientBackdrop={true}>
@@ -55,7 +60,19 @@ const previewCaseStudies = caseStudies.slice(0, 2);
     <div class="quad__col">
       <div class="quad__cell">
         <p class="eyebrow">Case studies</p>
-        {previewCaseStudies.map((cs) => <CaseStudyCard {...cs} />)}
+        {previewCaseStudies.length === 0 ? (
+          <p class="measure">Nothing published yet.</p>
+        ) : (
+          previewCaseStudies.map((entry) => (
+            <WritingCard
+              href={`/writing/${entry.id}`}
+              title={entry.data.title}
+              description={entry.data.description}
+              date={entry.data.date}
+              publication={entry.data.publication}
+            />
+          ))
+        )}
         <p class="quad__more">
           <a href="/case-studies" aria-label="More case studies">More…</a>
         </p>
@@ -119,9 +136,6 @@ const previewCaseStudies = caseStudies.slice(0, 2);
       border-top: 1px solid var(--line);
     }
 
-    /* Indra's net sits beside its label rather than under it, so the
-       label's own line doesn't push the net down further than it needs
-       to be — the whole point is getting more of it above the fold. */
     .indra-row {
       display: flex;
       align-items: flex-start;
@@ -135,9 +149,6 @@ const previewCaseStudies = caseStudies.slice(0, 2);
       flex: 1 1 auto;
       display: flex;
       justify-content: flex-end;
-      /* shift left by roughly half the net's own width (260px max-width,
-         so ~130px), and nudge up slightly so the tip lands near the
-         label's own line instead of a full row below it */
       padding-right: 130px;
     }
     .indra-row__net :global(.indra-net) {
@@ -152,9 +163,6 @@ const previewCaseStudies = caseStudies.slice(0, 2);
     .quad__more a { text-decoration: underline; text-decoration-color: var(--thread); }
     .quad__more a:hover { text-decoration-color: var(--moss); }
 
-    /* quiet one-line teaser for the paused app — a plain link, not an
-       inline expand, so tapping it never shifts anything else on the
-       page (Indra's net stays put) */
     .apps-teaser {
       margin-top: var(--space-1);
       padding-top: var(--space-1);
