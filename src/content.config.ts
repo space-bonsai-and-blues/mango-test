@@ -7,11 +7,22 @@ const writing = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    // Where else this piece was published, e.g. "Space Bonsai and Blues"
     publication: z.string().optional(),
     tags: z.array(z.string()).optional(),
     draft: z.boolean().optional().default(false),
   }),
 });
 
-export const collections = { writing };
+const comics = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/comics" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.coerce.date(),
+      image: image(),
+      alt: z.string(),
+      draft: z.boolean().optional().default(false),
+    }),
+});
+
+export const collections = { writing, comics };
