@@ -32,13 +32,14 @@ const formatted = date.toLocaleDateString("en-US", {
     <p class="eyebrow">{formatted}</p>
     <h1>{title}</h1>
 
-    <div class="strip__image">
+   <div class="strip__image">
       <Image
         src={image}
         alt={alt}
         widths={[480, 800, 1200]}
         sizes="(max-width: 900px) 100vw, 900px"
       />
+      {caption && <p class="strip__caption">{caption}</p>}
     </div>
 
     <nav class="strip__nav" aria-label="Comic navigation">
