@@ -20,7 +20,8 @@ const comics = defineCollection({
       title: z.string(),
       date: z.coerce.date(),
       image: image(),
-      alt: z.string(),
+    alt: z.string(),
+      caption: z.string().optional(),
       draft: z.boolean().optional().default(false),
     }),
 });
