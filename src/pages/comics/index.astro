@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ComicCard from "../../components/ComicCard.astro";
+import { getCollection } from "astro:content";
+
+const comics = (await getCollection("comics", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Comics" description="A comics series from Nara.">
+  <section class="wrap comics-page">
+    <p class="eyebrow">Comics</p>
+    <h1>Comics</h1>
+
+    {comics.length === 0 ? (
+      <p class="measure">Nothing published yet — check back soon.</p>
+    ) : (
+      <div class="comics-grid">
+        {comics.map((entry) => (
+          <ComicCard
+            href={`/comics/${entry.id}`}
+            title={entry.data.title}
+            date={entry.data.date}
+            image={entry.data.image}
+            alt={entry.data.alt}
+          />
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .comics-page { padding: var(--space-4) 0 var(--space-6); }
+  .comics-page h1 { margin: 0.3em 0 var(--space-3); }
+  .comics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-3);
+  }
+</style>
