@@ -10,6 +10,7 @@ const writing = defineCollection({
     publication: z.string().optional(),
     tags: z.array(z.string()).optional(),
     draft: z.boolean().optional().default(false),
+    image: z.string().optional(),
   }),
 });
 
@@ -20,7 +21,7 @@ const comics = defineCollection({
       title: z.string(),
       date: z.coerce.date(),
       image: image(),
-    alt: z.string(),
+      alt: z.string(),
       caption: z.string().optional(),
       draft: z.boolean().optional().default(false),
     }),
