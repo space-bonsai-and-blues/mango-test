@@ -20,7 +20,8 @@ image: /images/decision-making-x-post.jpg
 
 I saw a post on X that reminded me of a subject that keeps coming up while working with Claude on developing decision-making apps through a systemic thinking lens. So I brought the story to Claude for a case study. Here's the original post:
 
-![Tibo's X reply describing Google's internal pre-ChatGPT tool, LMChat](/images/decision-making-x-post.png)
+![Tibo's X reply describing Google's internal pre-ChatGPT tool, LMChat](/images/decision-making-x-post.jpg)
+*Cheng Lou (@_chen…) and Tibo (@thsottiaux) discussing Google's internal chatbot that predated ChatGPT. Screenshot from X.*
 
 ---
 
