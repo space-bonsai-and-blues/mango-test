@@ -17,6 +17,7 @@ const formatted = date.toLocaleDateString("en-US", {
 
 <article class="writing-card" data-series={series}>
   <a href={href} class="writing-card__link">
+    {series && <p class="eyebrow writing-card__series">{series}</p>}
     <p class="eyebrow">
       {formatted}{publication && ` · ${publication}`}
     </p>
@@ -34,6 +35,10 @@ const formatted = date.toLocaleDateString("en-US", {
   .writing-card__link {
     display: block;
     text-decoration: none;
+  }
+  .writing-card__series {
+    margin-bottom: 0.2em;
+    color: var(--moss);
   }
   .writing-card h3 {
     margin: 0.3em 0 0.4em;
