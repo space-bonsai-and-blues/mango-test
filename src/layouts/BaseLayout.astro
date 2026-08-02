@@ -5,15 +5,14 @@ import AmbientNet from "../components/AmbientNet.astro";
 interface Props {
   title: string;
   description?: string;
-  // When true, the ambient net backdrop spans the header + hero region
-  // together, so the pattern reads as reaching the true top of the page
-  // rather than stopping at the hero's own box. Homepage-only.
+  image?: string;
   ambientBackdrop?: boolean;
 }
 
 const {
   title,
   description = "Nara — systemic thinking, social innovation, and contemplative practice, in conversation with AI.",
+  image,
   ambientBackdrop = false,
 } = Astro.props;
 
@@ -33,6 +32,18 @@ const nav = [
     <meta name="description" content={description} />
     <title>{title} · Nara</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={Astro.url} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    {image && <meta property="og:image" content={new URL(image, Astro.url)} />}
+
+    <meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {image && <meta name="twitter:image" content={new URL(image, Astro.url)} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
