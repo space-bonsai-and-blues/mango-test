@@ -1,6 +1,7 @@
 ---
 title: "Decision making through systemic thinking lens"
 description: "See every node as a new game — a case study on AlphaGo, Google's LMChat, and what makes a decision truly fresh."
+publication: "Systemic Thinking for Strategy · Nara & Claude"
 date: 2026-08-02
 tags: ["case-study", "Systemic Thinking for Strategy"]
 image: /images/decision-making-x-post.jpg
