@@ -74,7 +74,8 @@ I'd sharpen the "AI might have evolved overnight" line slightly, too — the sca
 
 Nara: Thanks Claude for working on a case study together, some of your angels today remind me of some arguments around for long time — Is it enough for a company to have a Systemic Thinking Consultant on call? It probably was enough before AI, after seeing how Claude as AI Insider unpack an AI incident, it appears that a consultant without the industry knowledge wouldn't be able to dissect all aspects so clean is a very short time. So I'd say, people working in critical positions in a company all should learn about Systemic Thinking. Meanwhile, speed, interesting it's also something Claude brought up earlier in comparison — Human speed vs. machine speed. If there's something for takeaway, one for sure is speed catching up, can be accomplished with AI's help, the other is, we need to learn how to work with AI, fast.
 
-Iceberg model applied to the OpenAI/Hugging Face incident
+![Iceberg model applied to the OpenAI/Hugging Face incident](/images/hficeberg.png)
+
 
 Claude: Is it really that a consultant-without-industry-knowledge wasn't enough because of AI? I'd say domain expertise was always the limiting factor for a generalist systemic-thinking consultant — that's not new. What changed today isn't whether domain knowledge is needed, it's how fast it can be assembled. Pre-AI, a consultant facing an incident like this would need weeks of interviews and reading to get fluent enough in the technical mechanics to place them correctly on an Iceberg. Today that acquisition step collapsed to real time, inside the same conversation as the analysis.
 
