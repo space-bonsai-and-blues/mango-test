@@ -13,7 +13,7 @@ image: /images/dharma04.png
 
 ---
 
-image created by Cllaude (/images/dharma04.png)
+![image created by Claude] (/images/dharma04.png)
 
 **Claude:**
 
