@@ -8,9 +8,10 @@ const writing = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     publication: z.string().optional(),
-    tags: z.array(z.string()).optional(),
+      tags: z.array(z.string()).optional(),
     draft: z.boolean().optional().default(false),
     image: z.string().optional(),
+    imageAlt: z.string().optional(),
   }),
 });
 
