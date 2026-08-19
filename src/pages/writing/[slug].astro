@@ -22,8 +22,8 @@ const formatted = entry.data.date.toLocaleDateString("en-US", {
 <BaseLayout title={entry.data.title} description={entry.data.description} image={entry.data.image}>
   <article class="wrap post">
     <a class="post__back" href="/writing">← All writing</a>
-    {entry.data.image && (
-      <img class="post__hero" src={entry.data.image} alt="" />
+       {entry.data.image && (
+      <img class="post__hero" src={entry.data.image} alt={entry.data.imageAlt ?? ""} />
     )}
     <p class="eyebrow post__meta">
       {formatted}{entry.data.publication && ` · ${entry.data.publication}`}
