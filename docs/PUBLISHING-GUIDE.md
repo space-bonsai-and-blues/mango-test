@@ -61,6 +61,7 @@ publication: "Series Name · Nara & Claude"
 date: YYYY-MM-DD
 tags: ["case-study", "Series Name"]
 image: /images/exact-filename-from-step-1.jpg
+imageAlt: "A minimalist SVG in warm tones, a single circle inside a square frame"
 ---
 
 Article body goes here.
