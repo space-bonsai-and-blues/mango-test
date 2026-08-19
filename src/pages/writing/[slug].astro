@@ -22,6 +22,9 @@ const formatted = entry.data.date.toLocaleDateString("en-US", {
 <BaseLayout title={entry.data.title} description={entry.data.description} image={entry.data.image}>
   <article class="wrap post">
     <a class="post__back" href="/writing">← All writing</a>
+    {entry.data.image && (
+      <img class="post__hero" src={entry.data.image} alt="" />
+    )}
     <p class="eyebrow post__meta">
       {formatted}{entry.data.publication && ` · ${entry.data.publication}`}
     </p>
@@ -46,4 +49,11 @@ const formatted = entry.data.date.toLocaleDateString("en-US", {
   .post__body :global(p) { margin-bottom: 1.2em; }
   .post__body :global(a) { text-decoration-color: var(--line); }
   .post__body :global(a:hover) { text-decoration-color: var(--moss); }
+  .post__hero {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: var(--space-4) 0;
+    display: block;
+  }
 </style>
